@@ -5,7 +5,7 @@ import vertexai
 from dotenv import load_dotenv
 from vertexai.preview import reasoning_engines
 
-from scheduling_agent.tools_and_agent import agent as root_agent
+from scheduling_agent.agent import root_agent
 
 def main():
     # Load environment variables

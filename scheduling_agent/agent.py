@@ -8,7 +8,7 @@ from google.genai import types
 from google.adk.tools.agent_tool import AgentTool
 
 from .helpers import is_pending_auth_event, get_function_call_id, get_function_call_auth_config, get_user_input
-from .tools_and_agent import agent as calendar_agent
+from .tools_and_agent import calendar_agent
 from google.adk.agents import Agent
 
 load_dotenv()
@@ -293,8 +293,8 @@ async def invoke_calendar_agent(tool_context: ToolContext):
 
 # if __name__ == '__main__':
 #   asyncio.run(async_main())
-agent = Agent(
-    name="root_agent",
+root_agent = Agent(
+    name="scheduling_agent",
     model="gemini-2.0-flash",              # or your preferred LLM
     # system_prompt="""
     # You have access to Google Calendar via the calendar tools. 

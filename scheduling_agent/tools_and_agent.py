@@ -4,7 +4,7 @@ CLIENT_ID=os.getenv("CLIENT_ID")
 CLIENT_SECRET=os.getenv("CLIENT_SECRET")
 
 from google.adk.tools.google_api_tool import calendar_tool_set
-from google.adk.agents import LlmAgent
+from google.adk.agents import Agent
 
 # # 1. Configure your OAuth2 credentials for the Google Calendar toolset
 # calendar_tool_set.configure_auth(
@@ -39,8 +39,8 @@ calendar_tool_set.configure_auth(
 # async def get_tools():
 #     return await calendar_tool_set.get_tools()
 
-agent = LlmAgent(
-    name="scheduling_agent",
+agent = Agent(
+    name="calendar_agent",
     model="gemini-2.0-flash",              # or your preferred LLM
     # system_prompt="""
     # You have access to Google Calendar via the calendar tools. 

@@ -6,7 +6,7 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 from .helpers import is_pending_auth_event, get_function_call_id, get_function_call_auth_config, get_user_input
-from .tools_and_agent import agent
+from .agent import root_agent as agent
 
 load_dotenv()
 
