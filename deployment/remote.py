@@ -51,6 +51,8 @@ def create(env_vars) -> None:
     
     # Now deploy to Agent Engine
     remote_app = agent_engines.create(
+        display_name="calendar-agent-rushiil-0.1.0",
+        description="Calendar Agent with Authorization worked in local",
         agent_engine=app,
         requirements=[
             "google-cloud-aiplatform[adk,agent_engines]",
