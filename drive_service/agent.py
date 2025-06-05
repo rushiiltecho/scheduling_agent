@@ -28,16 +28,14 @@ drive_tool_set = DriveToolset()
 import logging
 import warnings
 from google.adk import Agent
-from .config import Config
 from .prompts import GLOBAL_INSTRUCTION, INSTRUCTION
-import subprocess
 
 warnings.filterwarnings("ignore", category=UserWarning, module=".*pydantic.*")
 
 
 # configure logging __name__
 logger = logging.getLogger(__name__)
-access_token = "DEFAULT"
+access_token = os.getenv("ACCESS_TOKEN") or "DEFAULT"
 calendar_tool_set.configure_access_token_auth(access_token)
 drive_tool_set.configure_access_token_auth(access_token)
 print(f"ACCESS TOKEN: {access_token}")
@@ -68,6 +66,7 @@ def after_agent_callback(callback_context:CallbackContext):
 root_agent = Agent(
     model="gemini-2.0-flash-001",
     global_instruction=GLOBAL_INSTRUCTION,
+    instruction=INSTRUCTION,
     name="drive_agent",#"AgentSpace_root_agent",
     tools=[*calendar_tool_set.get_tools(),*drive_tool_set.get_tools()],
     before_agent_callback=before_agent_callback,

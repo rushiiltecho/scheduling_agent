@@ -84,18 +84,18 @@ else:
             AGENT_WHL_FILE, "deprecated"
         ],
         extra_packages=[AGENT_WHL_FILE],
-        display_name="DRIVE_AGENT",
-        description='DRive agent with dynamic access token input',
+        display_name=os.getenv("DEPLOYMENT_NAME") or "DEFAULT_AGENT_DEPLOYMENT",
+        description=os.getenv('DEPLOYMENT_DESCRIPTION') or "DEFAULT AGENT DESCRIPTION",
     )
 
-    logging.debug("testing deployment:")
-    session = remote_app.create_session(user_id="123")
-    for event in remote_app.stream_query(
-        user_id="123",
-        session_id=session["id"],
-        message="hello!",
-    ):
-        if event.get("content", None):
-            print(
-                f"Agent deployed successfully under resource name: {remote_app.resource_name}"
-            )
+    # logging.debug("testing deployment:")
+    # session = remote_app.create_session(user_id="123")
+    # for event in remote_app.stream_query(
+    #     user_id="123",
+    #     session_id=session["id"],
+    #     message="hello!",
+    # ):
+    #     if event.get("content", None):
+    #         print(
+    #             f"Agent deployed successfully under resource name: {remote_app.resource_name}"
+    #         )
