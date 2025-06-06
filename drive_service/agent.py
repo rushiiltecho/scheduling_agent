@@ -41,34 +41,48 @@ drive_tool_set.configure_access_token_auth(access_token)
 print(f"ACCESS TOKEN: {access_token}")
 def before_agent_callback(callback_context:CallbackContext):
     print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT (Before agent):\n{callback_context.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
-    global calendar_tool_set 
-    if callback_context._invocation_context.session.state:
-        print(callback_context._invocation_context.session.state)
-        for key, value in callback_context._invocation_context.session.state.items():  
-            if 'temp:googl' in key:
-                print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{callback_context._invocation_context.session.state}\n{'*'*60}\n{value}\n{'*'*60}\n")
-                calendar_tool_set.configure_access_token_auth(value)
-                drive_tool_set.configure_access_token_auth(value)
-                tools = [*calendar_tool_set.get_tools(),*drive_tool_set.get_tools()]
-                callback_context._invocation_context.agent.tools= tools
-            if "openIdConnect" in key:
-                print(f"UPDATED LOCAL ACCESS TOKEN STATE: {callback_context._invocation_context.session.state[key].get("http",{}).get("credentials",{}).get("token","")}")
-                access_token = callback_context._invocation_context.session.state[key].get("http",{}).get("credentials",{}).get("token","") or ""
-                calendar_tool_set.configure_access_token_auth(access_token)
-                drive_tool_set.configure_access_token_auth(access_token)
-                tools = [*calendar_tool_set.get_tools(),*drive_tool_set.get_tools()]
-                callback_context._invocation_context.agent.tools= tools
+    # global calendar_tool_set 
+    # if callback_context._invocation_context.session.state:
+    #     print(callback_context._invocation_context.session.state)
+    #     for key, value in callback_context._invocation_context.session.state.items():  
+    #         if 'temp:googl' in key:
+    #             print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{callback_context._invocation_context.session.state}\n{'*'*60}\n{value}\n{'*'*60}\n")
+    #             calendar_tool_set.configure_access_token_auth(value)
+    #             drive_tool_set.configure_access_token_auth(value)
+    #             tools = [*calendar_tool_set.get_tools(),*drive_tool_set.get_tools()]
+    #             callback_context._invocation_context.agent.tools= tools
+    #         if "openIdConnect" in key:
+    #             print(f"UPDATED LOCAL ACCESS TOKEN STATE: {callback_context._invocation_context.session.state[key].get("http",{}).get("credentials",{}).get("token","")}")
+    #             access_token = callback_context._invocation_context.session.state[key].get("http",{}).get("credentials",{}).get("token","") or ""
+    #             calendar_tool_set.configure_access_token_auth(access_token)
+    #             drive_tool_set.configure_access_token_auth(access_token)
+    #             tools = [*calendar_tool_set.get_tools(),*drive_tool_set.get_tools()]
+    #             callback_context._invocation_context.agent.tools= tools
 
 def after_agent_callback(callback_context:CallbackContext):
     print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT (After agent):\n{callback_context.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
 
 
+from google.adk.agents import Agent
+from drive_service.tools import jira_tool
+
+
+JIRA_AGENT_INSTRUCTIONS = "you're the Jira Agent."
+
+import asyncio
+
+def jiraa_tools():
+    print("function start")
+    tools = jira_tool.get_tools()
+    while True:
+        print(tools)
+
+# ====================================
 root_agent = Agent(
-    model="gemini-2.0-flash-001",
-    global_instruction=GLOBAL_INSTRUCTION,
-    instruction=INSTRUCTION,
-    name="drive_agent",#"AgentSpace_root_agent",
-    tools=[*calendar_tool_set.get_tools(),*drive_tool_set.get_tools()],
-    before_agent_callback=before_agent_callback,
-    after_agent_callback=after_agent_callback,
+    name="jira_agent",
+    model="gemini-2.0-flash",
+    description=("Agent to provide assistance for JIRA services."),
+    instruction=JIRA_AGENT_INSTRUCTIONS,
+    tools=jira_tool.get_tools()
 )
+
