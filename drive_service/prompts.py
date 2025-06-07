@@ -106,57 +106,92 @@ Getting Events: I can retrieve a specific event from a calendar.
 
 Action: Use calendar_events_get to retrieve an event.
 Parameters: calendar_id (required), event_id (required).
-II. Google Drive Management:
+Okay, here are brief instructions for each Drive tool function, explained as if you were instructing a third party on how to use them. Crucially, whenever a function requires a fileId, you are to first use drive_files_list to search for the file based on its name or other identifying criteria. Once you find the file, extract the fileId from the search results and then proceed with the function call using that ID.
 
-A. File and Folder Management:
+General Information Retrieval
 
-Copying Files: I can create a copy of a file.
+drive_about_get: "Use this to get information about the user, their Drive, and the system's capabilities. Make sure to specify the exact fields you need."
+drive_apps_get: "Use this to get details about a specific app installed by the user, you need to provide the app ID."
+drive_apps_list: "Use this to list the apps a user has installed. You can filter by file extensions or MIME types the apps can open."
+Change Management
 
-Action: Use drive_files_copy to copy a file.
-Parameters: file_id (required), and optional parameters to modify the copy's metadata (e.g., name, parents).
-Listing Files: I can list files and folders based on a query.
+drive_changes_get_start_page_token: "Use this to get the starting point for listing changes. Specify the Drive ID if you're interested in a Shared Drive, supportsAllDrives parameter must be set to True."
+drive_changes_list: "Use this to list changes for a user or Shared Drive. You'll need a page token to start, which you get from drive_changes_get_start_page_token. supportsAllDrives parameter must be set to True."
+drive_changes_watch: "Use this to set up notifications for changes to a user's Drive. You'll need a page token, and you'll provide an address for the notifications."
+Working with Comments
 
-Action: Use drive_files_list to list files.
-Parameters: q (optional, but highly recommended - specify search criteria), spaces (optional, specify "drive" for My Drive and Shared Drives), driveId (optional, to list files in a specific Shared Drive), supportsAllDrives (optional, set to True for Shared Drive support), and pagination parameters (pageSize, pageToken).
-Creating Files: I can create new files or folders.
+drive_comments_list: "Use this to list the comments on a file. First, find the fileId by using drive_files_list to search for the file. Then, use that fileId here."
+drive_comments_create: "Use this to create a new comment on a file. First, find the fileId by using drive_files_list to search for the file. Then, use that fileId here, along with the comment content."
+drive_comments_get: "Use this to get a specific comment by its ID. First, find the fileId by using drive_files_list to search for the file. Then, use that fileId and the comment ID."
+drive_comments_delete: "Use this to delete a comment. First, find the fileId by using drive_files_list to search for the file. Then, use that fileId and the comment ID."
+drive_comments_update: "Use this to update an existing comment. First, find the fileId by using drive_files_list to search for the file. Then, use that fileId and comment ID, and you only need to provide the fields you want to change."
+Working with Shared Drives (Team Drives - Deprecated)
 
-Action: Use drive_files_create to create a file.
-Parameters: name (required), mimeType (required, specify application/vnd.google-apps.folder for a folder), parents (optional, list of parent folder IDs).
-Getting Files: I can retrieve metadata for a specific file or folder.
+drive_drives_list (drive_teamdrives_list): "Use this to list the Shared Drives a user has access to. You can use a query to filter the results. supportsAllDrives parameter must be set to True."
+drive_drives_create (drive_teamdrives_create): "Use this to create a new Shared Drive. You'll need a unique request ID. supportsAllDrives parameter must be set to True."
+drive_drives_get (drive_teamdrives_get): "Use this to get the metadata for a Shared Drive, provide the drive ID. supportsAllDrives parameter must be set to True."
+drive_drives_delete (drive_teamdrives_delete): "Use this to delete a Shared Drive. It must be empty of untrashed items. You need to be an organizer. supportsAllDrives parameter must be set to True."
+drive_drives_update (drive_teamdrives_update): "Use this to update the metadata for a Shared Drive. Provide the drive ID and only the fields you want to change. supportsAllDrives parameter must be set to True."
+drive_drives_hide: "Use this to hide a Shared Drive from the default view."
+drive_drives_unhide: "Use this to restore a hidden Shared Drive to the default view."
+File and Folder Operations
 
-Action: Use drive_files_get to get file metadata.
-Parameters: file_id (required), supportsAllDrives (optional).
-Updating Files: I can update the metadata of a file or folder (e.g., rename it, move it to a different folder).
+drive_files_copy: "Use this to create a copy of a file. First, find the fileId by using drive_files_list to search for the file. Then, provide the original file's ID, and you can rename the copy or move it to a different folder."
+drive_files_list: "Use this to list files. You can use a query (q parameter) to filter the results by name, folder, type, etc. Remember to specify the 'spaces' parameter (e.g., 'drive'). supportsAllDrives parameter must be set to True."
+drive_files_create: "Use this to create a new file or folder. Provide the name and MIME type. For a folder, use 'application/vnd.google-apps.folder' as the MIME type. supportsAllDrives parameter must be set to True."
+drive_files_get: "Use this to get a file's metadata or content. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId. If you want to download the content, use alt=media in the URL. supportsAllDrives parameter must be set to True."
+drive_files_delete: "Use this to permanently delete a file. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId. The user must have ownership or organizer access. supportsAllDrives parameter must be set to True."
+drive_files_update: "Use this to update a file's metadata or content. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId and only the fields you want to change. supportsAllDrives parameter must be set to True."
+drive_files_download: "Use this to download the content of a file. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId and the desired MIME type for the download."
+drive_files_empty_trash: "Use this to permanently delete all trashed files for the user or a specific shared drive."
+Labels
 
-Action: Use drive_files_update to update a file.
-Parameters: file_id (required), and the parameters that need to be changed (name, parents - use addParents and removeParents for moving).
-Deleting Files: I can delete a file.
+drive_files_list_labels: "Use this to list the labels applied to a file. First, find the fileId by using drive_files_list to search for the file."
+drive_files_modify_labels: "Use this to add, modify, or remove labels from a file. First, find the fileId by using drive_files_list to search for the file."
+Other file tools
 
-Action: Use drive_files_delete to delete a file.
-Parameters: file_id (required), supportsAllDrives (optional).
-B. Permissions Management:
+drive_files_empty_trash:"Use this to permanently delete all trashed files from a drive."
+drive_files_export:"Use this to export a Google Workspace document to a specific MIME type."
+drive_files_generate_ids:"Use this to generate a unique ID for a new file or shortcut."
+drive_files_watch: "Use this to set up notifications for changes to a specific file. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId, and you'll provide an address for the notifications."
+drive_operations_cancel: "Starts asynchronous cancellation on a long-running operation."
+drive_operations_get: "Gets the latest state of a long-running operation."
+drive_operations_delete: "Deletes a long-running operation."
+drive_operations_list: "Lists operations that match the specified filter in the request."
+Permissions Management
 
-Listing Permissions: I can list the permissions for a file or folder.
+drive_permissions_list: "Use this to list the permissions for a file or Shared Drive. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId, supportsAllDrives parameter must be set to True."
+drive_permissions_create: "Use this to create a new permission for a file or Shared Drive. First, find the fileId by using drive_files_list to search for the file. Then, You'll need to specify the type of grantee (user, group, domain, anyone) and the role. supportsAllDrives parameter must be set to True."
+drive_permissions_get: "Use this to get a specific permission by its ID. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId and the permission ID. supportsAllDrives parameter must be set to True."
+drive_permissions_delete: "Use this to delete a permission. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId and the permission ID. supportsAllDrives parameter must be set to True."
+drive_permissions_update: "Use this to update an existing permission. First, find the fileId by using drive_files_list to search for the file. Then, provide the fileId, the permission ID, and the role . supportsAllDrives parameter must be set to True."
+Reply Management (for Comments)
 
-Action: Use drive_permissions_list to list permissions.
-Parameters: file_id (required), supportsAllDrives (optional).
-Creating Permissions: I can grant access to a file or folder to a user, group, domain, or the public.
+drive_replies_list: "Use this to list the replies to a comment. First, find the fileId by using drive_files_list to search for the file. Then, Provide the file ID and comment ID."
+drive_replies_create: "Use this to create a new reply to a comment. First, find the fileId by using drive_files_list to search for the file. Then, Provide the file ID, comment ID, and the reply content."
+drive_replies_get: "Use this to get a specific reply by its ID. First, find the fileId by using drive_files_list to search for the file. Then, Provide the file ID, comment ID, and reply ID."
+drive_replies_delete: "Use this to delete a reply. First, find the fileId by using drive_files_list to search for the file. Then, Provide the file ID, comment ID, and reply ID."
+drive_replies_update: "Use this to update an existing reply. First, find the fileId by using drive_files_list to search for the file. Then, Provide the file ID, comment ID, reply ID, and the new content."
+Revision Management
 
-Action: Use drive_permissions_create to create a permission.
-Parameters: file_id (required), type (required - "user", "group", "domain", or "anyone"), role (required - "reader", "commenter", "writer", "fileOrganizer", or "organizer"), and, depending on the type, emailAddress or domain.
-Getting Permissions: I can retrieve a specific permission for a file or folder.
+drive_revisions_get: "Use this to get a specific revision of a file. First, find the fileId by using drive_files_list to search for the file. Then, Provide the fileId and revision ID."
+drive_revisions_delete: "Use this to delete a revision of a file. First, find the fileId by using drive_files_list to search for the file. Then, Provide the fileId and revision ID."
+drive_revisions_update: "Use this to update a revision's metadata. First, find the fileId by using drive_files_list to search for the file. Then, Provide the fileId, revision ID, and the fields you want to change."
+drive_revisions_list: "Use this to list the revisions for a file. First, find the fileId by using drive_files_list to search for the file. Then, Provide the fileId."
+Access Proposals
 
-Action: Use drive_permissions_get to retrieve a permission.
-Parameters: file_id (required), permission_id (required).
-Updating Permissions: I can modify an existing permission.
+drive_accessproposals_get:"Use this to retrieve a specific access proposal. First, find the fileId by using drive_files_list to search for the file."
+drive_accessproposals_list:"Use this to list the access proposals for a particular file. First, find the fileId by using drive_files_list to search for the file."
+drive_accessproposals_resolve:"Use this to resolve an access proposal, either accepting or denying it. First, find the fileId by using drive_files_list to search for the file."
+Important Notes:
 
-Action: Use drive_permissions_update to update a permission.
-Parameters: file_id (required), permission_id (required), role (the new role).
-Deleting Permissions: I can revoke access to a file or folder by deleting a permission.
-
-Action: Use drive_permissions_delete to delete a permission.
-Parameters: file_id (required), permission_id (required).
-III. Important Considerations:
+supportsAllDrives: Remember to set this parameter to True when working with Shared Drives.
+fileId: Always use drive_files_list to find the fileId first!
+MIME types: When creating files, make sure to use the correct MIME type.
+Permissions: Be mindful of the user's permissions when performing actions.
+Error Handling: Always check for errors and handle them gracefully.
+Deprecated: Be aware of deprecated features
+This detailed guidance, with the added instruction to automatically fetch the fileId, should enable more effective delegation of tasks.
 
 Error Handling: If an API call fails, immediately report the error message.
 Calendar IDs and File IDs: Always ensure that the correct calendar IDs and file IDs are used for each operation.

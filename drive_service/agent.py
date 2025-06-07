@@ -51,7 +51,7 @@ def before_agent_callback(callback_context:CallbackContext):
                 drive_tool_set.configure_access_token_auth(value)
                 tools = [*calendar_tool_set.get_tools(),*drive_tool_set.get_tools()]
                 callback_context._invocation_context.agent.tools= tools
-            if "openIdConnect" in key:
+            elif "openIdConnect" in key:
                 print(f"UPDATED LOCAL ACCESS TOKEN STATE: {callback_context._invocation_context.session.state[key].get("http",{}).get("credentials",{}).get("token","")}")
                 access_token = callback_context._invocation_context.session.state[key].get("http",{}).get("credentials",{}).get("token","") or ""
                 calendar_tool_set.configure_access_token_auth(access_token)

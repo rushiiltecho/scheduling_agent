@@ -16,7 +16,7 @@ google-cloud-aiplatform = { extras = [
     "adk",
     "agent_engine",
 ], version = "^1.93.0" }
-google-adk = { git = "https://github.com/rushiiltecho/adk-python.git", rev = "v1.0.0" }
+google-adk = { git = "https://github.com/rushiiltecho/adk-python.git", rev = "v1.1.1" }
 jsonschema = "^4.23.0"
 
 [tool.poetry.group.dev.dependencies]
