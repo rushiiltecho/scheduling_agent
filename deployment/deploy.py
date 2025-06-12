@@ -19,7 +19,6 @@ import sys
 
 import vertexai
 from drive_service.agent import root_agent
-from drive_service.config import Config
 from google.api_core.exceptions import NotFound
 from vertexai import agent_engines
 from vertexai.preview.reasoning_engines import AdkApp
@@ -88,14 +87,14 @@ else:
         description=os.getenv('DEPLOYMENT_DESCRIPTION') or "DEFAULT AGENT DESCRIPTION",
     )
 
-    # logging.debug("testing deployment:")
-    # session = remote_app.create_session(user_id="123")
-    # for event in remote_app.stream_query(
-    #     user_id="123",
-    #     session_id=session["id"],
-    #     message="hello!",
-    # ):
-    #     if event.get("content", None):
-    #         print(
-    #             f"Agent deployed successfully under resource name: {remote_app.resource_name}"
-    #         )
+    logging.debug("testing deployment:")
+    session = remote_app.create_session(user_id="123")
+    for event in remote_app.stream_query(
+        user_id="123",
+        session_id=session["id"],
+        message="hello!",
+    ):
+        if event.get("content", None):
+            print(
+                f"Agent deployed successfully under resource name: {remote_app.resource_name}"
+            )
