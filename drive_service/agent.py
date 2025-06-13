@@ -43,22 +43,22 @@ warnings.filterwarnings("ignore", category=UserWarning, module=".*pydantic.*")
 
 def before_agent_callback(callback_context: CallbackContext):
     # print debug info
-    logger.debug("Entering before_agent_callback: %s", callback_context._invocation_context.__dict__)
-    state = callback_context._invocation_context.__dict__ or {}
+    # print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT (Before agent):\n{callback_context.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
+    state = callback_context._invocation_context.session.state or {}
+    print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [STATE] (Before agent):\n{state}\n\n{'*'*60}\n{'*'*60}\n")
     # Look for updated OAuth2 state
     for key, value in state.items():
         if "temp:" in key:
-            token = (value.get("http", {})
-                         .get("credentials", {})
-                         .get("token", "")) or value
+            token = value
             if token:
                 jira_tool_set.configure_access_token_auth(token)
-                callback_context._invocation_context.agent.tools = jira_tool_set.get_tools()
+                callback_context._invocation_context.agent.tools = jira_tool_set.get_tools()[:512]
                 logger.info("Updated Jira access token from session state.")
 
 
 def after_agent_callback(callback_context: CallbackContext):
-    logger.debug("Exiting after_agent_callback: %s", callback_context)
+    print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [STATE] (Before agent):\n{callback_context._invocation_context.session.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
+
 
 # Build the agent with Jira tools
 root_agent = Agent(
@@ -67,6 +67,6 @@ root_agent = Agent(
     instruction="You have access to tools for being a Jira Agent",
     name="jira_agent",
     tools=jira_tool_set.get_tools()[:512],
-    # before_agent_callback=before_agent_callback,
+    before_agent_callback=before_agent_callback,
     after_agent_callback=after_agent_callback,
 )
