@@ -15,6 +15,7 @@
 import argparse
 import json
 import logging
+import os
 import sys
 from typing import Any, Dict, List
 
@@ -42,7 +43,7 @@ class AtlassianApiFetcher:
         "confluence":     "https://developer.atlassian.com/cloud/confluence/swagger.v3.json",
     }
 
-    def __init__(self, product: str, cloud_id: str):
+    def __init__(self, product: str, cloud_id: str=os.getenv("JIRA_CLOUD_ID")):
         """
         Args:
             product: One of 'jira-platform', 'jira-software', or 'confluence'.
@@ -92,38 +93,38 @@ class AtlassianApiFetcher:
             raise
 
 
-# def main():
-#     parser = argparse.ArgumentParser(
-#         description=(
-#             "Download and save Atlassian Cloud OpenAPI (Swagger) specs for Jira or Confluence."
-#         )
-#     )
-#     parser.add_argument(
-#         "product",
-#         choices=["jira-platform", "jira-software", "confluence"],
-#         help="Which Atlassian product’s OpenAPI you want to fetch."
-#     )
-#     parser.add_argument(
-#         "--output",
-#         "-o",
-#         default=None,
-#         help="Output file path (e.g. './jira-platform.json'). "
-#              "If not provided, defaults to '<product>-openapi.json'."
-#     )
+def main():
+    parser = argparse.ArgumentParser(
+        description=(
+            "Download and save Atlassian Cloud OpenAPI (Swagger) specs for Jira or Confluence."
+        )
+    )
+    parser.add_argument(
+        "product",
+        choices=["jira-platform", "jira-software", "confluence"],
+        help="Which Atlassian product’s OpenAPI you want to fetch."
+    )
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=None,
+        help="Output file path (e.g. './jira-platform.json'). "
+             "If not provided, defaults to '<product>-openapi.json'."
+    )
 
-#     args = parser.parse_args()
+    args = parser.parse_args()
 
-#     out_path = args.output or f"{args.product}-openapi.json"
-#     fetcher = AtlassianApiFetcher(args.product)
+    out_path = args.output or f"{args.product}-openapi.json"
+    fetcher = AtlassianApiFetcher(args.product)
 
-#     try:
-#         fetcher.fetch_swagger()
-#         fetcher.save_to_file(out_path)
-#         print(f"Successfully downloaded {args.product} OpenAPI spec → {out_path}")
-#     except Exception as exc:
-#         logger.error("Operation failed: %s", exc)
-#         sys.exit(1)
+    try:
+        fetcher.fetch_swagger()
+        fetcher.save_to_file(out_path)
+        print(f"Successfully downloaded {args.product} OpenAPI spec → {out_path}")
+    except Exception as exc:
+        logger.error("Operation failed: %s", exc)
+        sys.exit(1)
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
