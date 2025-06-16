@@ -48,41 +48,52 @@ warnings.filterwarnings("ignore", category=UserWarning, module=".*pydantic.*")
 
 def after_agent_callback(callback_context: CallbackContext):
     print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [STATE] (After agent):\n{callback_context._invocation_context.session.state}\n\n{'*'*60}\n{'*'*60}\n")
-    # if callback_context._invocation_context.session.state:
-    #     state = callback_context._invocation_context.session.state.copy()
-    #     for key, value in state.items():  
-    #         if 'temp:jira' in key:
-    #             jira_tool_set.configure_access_token_auth(value)
-    #             tools = jira_tool_set.get_tools()
-    #             callback_context._invocation_context.agent.tools = tools
-    #         elif "openIdConnect" in key:
-    #             access_token = ACCESS_TOKEN
-    #             jira_tool_set.configure_access_token_auth(access_token)
-    #             tools = jira_tool_set.get_tools()
-    #             callback_context._invocation_context.agent.tools = tools
-    #             callback_context._invocation_context.session.state["temp:jiraAuth"] = ACCESS_TOKEN
+    if callback_context._invocation_context.session.state:
+        state = callback_context._invocation_context.session.state.copy()
+        for key, value in state.items():  
+            if 'temp:jiraAuthRush7' in key:
+                print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{value}\n{'*'*60}\n")
+                jira_tool_set.configure_access_token_auth(value)
+                tools = jira_tool_set.get_tools()[:10]
+                callback_context._invocation_context.agent.tools = tools
+                print("REINITIALIZED TOOLS 1")
+            elif 'temp:jira' in key:
+                print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{value}\n{'*'*60}\n")
+                jira_tool_set.configure_access_token_auth(value)
+                tools = jira_tool_set.get_tools()[:10]
+                callback_context._invocation_context.agent.tools = tools
+                print("REINITIALIZED TOOLS 2")
+            elif "openIdConnect" in key:
+                access_token = ACCESS_TOKEN
+                jira_tool_set.configure_access_token_auth(access_token)
+                tools = jira_tool_set.get_tools()[:10]
+                callback_context._invocation_context.agent.tools = tools
+                print("REINITIALIZED TOOLS 3")
 
 def before_agent_callback(callback_context: CallbackContext):
     print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [STATE] (Before agent):\n{callback_context._invocation_context.session.state}\n\n{'*'*60}\n{'*'*60}\n")
-    # if callback_context._invocation_context.session.state:
-    #     state = callback_context._invocation_context.session.state.copy()
-    #     for key, value in state.items():  
-    #         if 'temp:jiraAuthRush7' in key:
-    #             print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{value}\n{'*'*60}\n")
-    #             jira_tool_set.configure_access_token_auth(value)
-    #             tools = jira_tool_set.get_tools()[:10]
-    #             callback_context._invocation_context.agent.tools = tools
-    #         elif 'temp:jira' in key:
-    #             print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{value}\n{'*'*60}\n")
-    #             jira_tool_set.configure_access_token_auth(value)
-    #             tools = jira_tool_set.get_tools()[:10]
-    #             callback_context._invocation_context.agent.tools = tools
-    #         elif "openIdConnect" in key:
-    #             access_token = ACCESS_TOKEN
-    #             jira_tool_set.configure_access_token_auth(access_token)
-    #             tools = jira_tool_set.get_tools()[:10]
-    #             callback_context._invocation_context.agent.tools = tools
-    #             callback_context._invocation_context.session.state["temp:jiraAuth"] = ACCESS_TOKEN
+    if callback_context._invocation_context.session.state:
+        state = callback_context._invocation_context.session.state.copy()
+        for key, value in state.items():  
+            if 'temp:jiraAuthRush7' in key:
+                print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{value}\n{'*'*60}\n")
+                jira_tool_set.configure_access_token_auth(value)
+                tools = jira_tool_set.get_tools()[:10]
+                callback_context._invocation_context.agent.tools = tools
+                print("REINITIALIZED TOOLS 1")
+            elif 'temp:jira' in key:
+                print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{value}\n{'*'*60}\n")
+                jira_tool_set.configure_access_token_auth(value)
+                tools = jira_tool_set.get_tools()[:10]
+                callback_context._invocation_context.agent.tools = tools
+                print("REINITIALIZED TOOLS 2")
+            elif "openIdConnect" in key:
+                access_token = ACCESS_TOKEN
+                jira_tool_set.configure_access_token_auth(access_token)
+                tools = jira_tool_set.get_tools()[:10]
+                callback_context._invocation_context.agent.tools = tools
+                print("REINITIALIZED TOOLS 3")
+                # callback_context._invocation_context.session.state["temp:jiraAuth"] = ACCESS_TOKEN
 
 # Build the agent with Jira tools
 root_agent = Agent(
