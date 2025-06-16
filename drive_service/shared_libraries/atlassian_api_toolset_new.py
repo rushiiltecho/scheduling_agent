@@ -268,7 +268,7 @@ class AtlassianApiToolset(BaseToolset):
         resp = requests.get(self.spec_url)
         resp.raise_for_status()
         spec_dict = resp.json()
-        cloudId = os.getenv("JIRA_CLOUD_ID")
+        cloudId = os.getenv("JIRA_CLOUD_ID") or "c094642b-a0f8-4b0b-b88e-aa8bc1c5fbf6"
         spec_dict['servers'] = [{
             'url': f'https://api.atlassian.com/ex/jira/{cloudId}'
         }]
