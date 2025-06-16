@@ -234,13 +234,13 @@ class AtlassianApiToolset(BaseToolset):
                 credentials=HttpCredentials(token=self._access_token),
             ),
         )
-        auth_credential= AuthCredential(
-            auth_type=AuthCredentialTypes.OAUTH2,
-            oauth2=OAuth2Auth(
-                    client_id=os.getenv("JIRA_CLIENT_ID"),
-                    client_secret=os.getenv("JIRA_CLIENT_SECRET"),
-                )
-        )
+        # auth_credential= AuthCredential(
+        #     auth_type=AuthCredentialTypes.OAUTH2,
+        #     oauth2=OAuth2Auth(
+        #             client_id=os.getenv("JIRA_CLIENT_ID"),
+        #             client_secret=os.getenv("JIRA_CLIENT_SECRET"),
+        #         )
+        # )
         oidc = OpenIdConnectWithConfig(
             authorization_endpoint="https://auth.atlassian.com/authorize",
             token_endpoint="https://auth.atlassian.com/oauth/token",
@@ -322,13 +322,13 @@ class AtlassianApiToolset(BaseToolset):
                 credentials=HttpCredentials(token=access_token),
             ),
         )
-        auth_credential= AuthCredential(
-            auth_type=AuthCredentialTypes.OAUTH2,
-            oauth2=OAuth2Auth(
-                    client_id=os.getenv("JIRA_CLIENT_ID"),
-                    client_secret=os.getenv("JIRA_CLIENT_SECRET"),
-                )
-        )
+        # auth_credential= AuthCredential(
+        #     auth_type=AuthCredentialTypes.OAUTH2,
+        #     oauth2=OAuth2Auth(
+        #             client_id=os.getenv("JIRA_CLIENT_ID"),
+        #             client_secret=os.getenv("JIRA_CLIENT_SECRET"),
+        #         )
+        # )
         return OpenAPIToolset(
             spec_str=json.dumps(spec_dict),
             spec_str_type="json",
