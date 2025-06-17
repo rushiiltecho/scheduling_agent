@@ -23,6 +23,7 @@ from google.adk.tools.tool_context import ToolContext
 
 from drive_service.shared_libraries.atlassian_api_toolset_new import JiraApiToolset
 from drive_service.shared_libraries.constants.confluence_tool_filters import user_tools, content_access_tools, space_tools, template_tools, core_workflow_tools, knowledge_extraction_tools
+from drive_service.entities.prompt_instruction import INSTRUCTIONS, jira_knowledge_extraction_functions
 # from .prompts import GLOBAL_INSTRUCTION, INSTRUCTION
 
 # Environment configuration
@@ -36,7 +37,7 @@ confluence_tool_filter = [*user_tools, *content_access_tools, *space_tools, *tem
 # Initialize Jira toolset and attach token
 jira_tool_set = JiraApiToolset(
     access_token=ACCESS_TOKEN,
-    tool_filter=confluence_tool_filter#["search_content_by_cql","get_current_user","get_audit_records"]
+    tool_filter=jira_knowledge_extraction_functions#confluence_tool_filter#["search_content_by_cql","get_current_user","get_audit_records"]
 )
 jira_tool_set.configure_access_token_auth(ACCESS_TOKEN)
 
@@ -71,6 +72,8 @@ def after_agent_callback(callback_context: CallbackContext):
             #     print("REINITIALIZED TOOLS 3")
 
 def before_agent_callback(callback_context: CallbackContext):
+    print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT (Before agent):\n{callback_context._invocation_context.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
+    print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [SESSION] (Before agent):\n{callback_context._invocation_context.session.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
     print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [STATE] (Before agent):\n{callback_context._invocation_context.session.state}\n\n{'*'*60}\n{'*'*60}\n")
     if callback_context._invocation_context.session.state:
         state = callback_context._invocation_context.session.state.copy()
@@ -84,7 +87,7 @@ def before_agent_callback(callback_context: CallbackContext):
             if 'temp:jira' in key:
                 print(f"\n{'*'*60}\nUPDATED ACCESS TOKEN STATE:\n{value}\n{'*'*60}\n")
                 jira_tool_set.configure_access_token_auth(value)
-                tools = jira_tool_set.get_tools()[:10]
+                tools = jira_tool_set.get_tools()[:512]
                 callback_context._invocation_context.agent.tools = tools
                 print("REINITIALIZED TOOLS 2")
             # elif "openIdConnect" in key:
@@ -99,9 +102,9 @@ def before_agent_callback(callback_context: CallbackContext):
 root_agent = Agent(
     model="gemini-2.0-flash-001",
     global_instruction="You are a jira Agent",
-    instruction="You have access to tools for being a Jira Agent",
+    instruction=INSTRUCTIONS,#"You have access to tools for being a Jira Agent",
     name="jira_agent",
-    tools=jira_tool_set.get_tools(),
+    tools=jira_tool_set.get_tools()[:512],
     before_agent_callback=before_agent_callback,
     after_agent_callback=after_agent_callback,
 )
