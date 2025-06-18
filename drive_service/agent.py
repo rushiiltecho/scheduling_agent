@@ -21,9 +21,8 @@ from google.adk.agents import Agent
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.tools.tool_context import ToolContext
 
-from drive_service.shared_libraries.atlassian_api_toolset_new import JiraApiToolset
-from drive_service.shared_libraries.constants.confluence_tool_filters import user_tools, content_access_tools, space_tools, template_tools, core_workflow_tools, knowledge_extraction_tools
-from drive_service.entities.prompt_instruction import INSTRUCTIONS, jira_knowledge_extraction_functions
+from drive_service.shared_libraries.atlassian_api_toolset_new import ConfluenceApiToolset as JiraApiToolset
+from drive_service.entities.prompt_instruction import INSTRUCTIONS, CONFLUENCE_INSTRUCTIONS, jira_knowledge_extraction_functions, confluence_tool_filter
 # from .prompts import GLOBAL_INSTRUCTION, INSTRUCTION
 
 # Environment configuration
@@ -32,12 +31,11 @@ CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN") or "DEFAULT"
 
 
-confluence_tool_filter = [*user_tools, *content_access_tools, *space_tools, *template_tools, *core_workflow_tools, "download_attachment", *knowledge_extraction_tools,"search_for_issues_using_jql","parse_jql_queries","sanitise_jql_queries"]
 
 # Initialize Jira toolset and attach token
 jira_tool_set = JiraApiToolset(
     access_token=ACCESS_TOKEN,
-    tool_filter=jira_knowledge_extraction_functions#confluence_tool_filter#["search_content_by_cql","get_current_user","get_audit_records"]
+    tool_filter=confluence_tool_filter#["search_content_by_cql","get_current_user","get_audit_records"]
 )
 jira_tool_set.configure_access_token_auth(ACCESS_TOKEN)
 
@@ -102,7 +100,7 @@ def before_agent_callback(callback_context: CallbackContext):
 root_agent = Agent(
     model="gemini-2.0-flash-001",
     global_instruction="You are a jira Agent",
-    instruction=INSTRUCTIONS,#"You have access to tools for being a Jira Agent",
+    instruction=CONFLUENCE_INSTRUCTIONS,#"You have access to tools for being a Jira Agent",
     name="jira_agent",
     tools=jira_tool_set.get_tools()[:512],
     before_agent_callback=before_agent_callback,
