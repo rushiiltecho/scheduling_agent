@@ -201,6 +201,9 @@ SCOPES = {
         "write:workflow:jira": "Create and update workflows."
             }
 scopes_to_give= ["read:jira-user","read:jira-work","offline_access"]
+
+
+#TODO: Modify the atlassianapitoolset such that it only requires the product name and scopes + spec_url should be automatically prodvided
 class AtlassianApiToolset(BaseToolset):
     """
     Base toolset for Atlassian APIs (Jira, Confluence) using OpenAPI spec
@@ -211,7 +214,9 @@ class AtlassianApiToolset(BaseToolset):
         spec_url: str,
         access_token: Optional[str],
         tool_filter: Optional[Union[ToolPredicate, List[str]]] = None,
+        product:str = ""
     ):
+        self.product = product
         self.spec_url = spec_url
         self._access_token = access_token
         self.tool_filter = tool_filter
@@ -270,7 +275,7 @@ class AtlassianApiToolset(BaseToolset):
         spec_dict = resp.json()
         cloudId = os.getenv("JIRA_CLOUD_ID") or "c094642b-a0f8-4b0b-b88e-aa8bc1c5fbf6"
         spec_dict['servers'] = [{
-            'url': f'https://api.atlassian.com/ex/jira/{cloudId}'
+            'url': f'https://api.atlassian.com/ex/{self.product}/{cloudId}'
         }]
         # Convert boolean enums to strings in the spec
         def convert_boolean_enums(obj):
@@ -361,6 +366,7 @@ class JiraApiToolset(AtlassianApiToolset):
             spec_url="https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
             access_token=access_token,
             tool_filter=tool_filter,
+            product="jira"
         )
 
 
@@ -377,4 +383,5 @@ class ConfluenceApiToolset(AtlassianApiToolset):
             spec_url="https://developer.atlassian.com/cloud/confluence/swagger.v3.json",
             access_token=access_token,
             tool_filter=tool_filter,
+            product="confluence"
         )
