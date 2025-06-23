@@ -25,19 +25,17 @@ from drive_service.shared_libraries.atlassian_api_toolset_new import JiraApiTool
 from drive_service.entities.prompt_instruction import INSTRUCTIONS, CONFLUENCE_INSTRUCTIONS, jira_knowledge_extraction_functions, confluence_tool_filter
 # from .prompts import GLOBAL_INSTRUCTION, INSTRUCTION
 
-# Environment configuration
-CLIENT_ID = os.getenv("CLIENT_ID")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN") or "DEFAULT"
+
+JIRA_ACCESS_TOKEN = os.getenv("ACCESS_TOKEN") or "DEFAULT"
 
 
 
 # Initialize Jira toolset and attach token
 jira_tool_set = JiraApiToolset(
-    access_token=ACCESS_TOKEN,
+    access_token=JIRA_ACCESS_TOKEN,
     tool_filter=jira_knowledge_extraction_functions#confluence_tool_filter#["search_content_by_cql","get_current_user","get_audit_records"]
 )
-jira_tool_set.configure_access_token_auth(ACCESS_TOKEN)
+jira_tool_set.configure_access_token_auth(JIRA_ACCESS_TOKEN)
 
 # Configure logging and warnings
 logger = logging.getLogger(__name__)
@@ -70,8 +68,8 @@ def after_agent_callback(callback_context: CallbackContext):
             #     print("REINITIALIZED TOOLS 3")
 
 def before_agent_callback(callback_context: CallbackContext):
-    print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT (Before agent):\n{callback_context._invocation_context.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
-    print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [SESSION] (Before agent):\n{callback_context._invocation_context.session.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
+    # print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT (Before agent):\n{callback_context._invocation_context.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
+    # print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [SESSION] (Before agent):\n{callback_context._invocation_context.session.__dict__}\n\n{'*'*60}\n{'*'*60}\n")
     print(f"\n{'*'*60}\n{'*'*60}\n\nCALLBACK_CONTEXT [STATE] (Before agent):\n{callback_context._invocation_context.session.state}\n\n{'*'*60}\n{'*'*60}\n")
     if callback_context._invocation_context.session.state:
         state = callback_context._invocation_context.session.state.copy()
