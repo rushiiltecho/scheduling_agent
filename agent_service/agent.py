@@ -15,8 +15,6 @@
 
 import os
 import asyncio
-CLIENT_ID=os.getenv("CLIENT_ID")
-CLIENT_SECRET=os.getenv("CLIENT_SECRET")
 
 from agent_service.shared_libraries.google_api_toolset import CalendarToolset, DriveToolset
 from google.adk.agents import Agent
