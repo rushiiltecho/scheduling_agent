@@ -5,3 +5,4 @@ _tmp*
 __pycache__/
 .env
 logging/
+poetry.toml
