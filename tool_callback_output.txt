@@ -1,0 +1,36 @@
+[Before] Tool Name: drive_files_list
+[Before] Tool Context Keys: ['_invocation_context', '_event_actions', '_state', 'function_call_id']
+[Before] Tool Context Keys: ['artifact_service', 'session_service', 'memory_service', 'invocation_id', 'branch', 'agent', 'user_content', 'session', 'end_invocation', 'live_request_queue', 'active_streaming_tools', 'transcription_cache', 'run_config']
+[Before] Tool Context Keys: []
+[Before] Args: {'q': "mimeType='application/vnd.ms-excel' or mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"}
+
+[After] Tool Name: drive_files_list
+[After] Tool Context Keys: ['_invocation_context', '_event_actions', '_state', 'function_call_id']
+[After] Tool Context Invocation Context: ['artifact_service', 'session_service', 'memory_service', 'invocation_id', 'branch', 'agent', 'user_content', 'session', 'end_invocation', 'live_request_queue', 'active_streaming_tools', 'transcription_cache', 'run_config']
+[After] Tool Context State: {'openIdConnect_-1936238844598381781_http_-6969612305473406660_existing_exchanged_credential': {'authType': 'http', 'http': {'scheme': 'bearer', 'credentials': {'token': 'DEFAULT_GOOGLE'}}}}
+[After] Args: {'q': "mimeType='application/vnd.ms-excel' or mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'", '_auth_prefix_vaf_Authorization': 'Bearer DEFAULT_GOOGLE'}
+
+[Before] Tool Name: drive_files_list
+[Before] Tool Context Keys: ['_invocation_context', '_event_actions', '_state', 'function_call_id']
+[Before] Tool Context Keys: ['artifact_service', 'session_service', 'memory_service', 'invocation_id', 'branch', 'agent', 'user_content', 'session', 'end_invocation', 'live_request_queue', 'active_streaming_tools', 'transcription_cache', 'run_config']
+[Before] Tool Context Keys: []
+[Before] Args: {'q': "mimeType='application/vnd.ms-excel' or mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"}
+
+[After] Tool Name: drive_files_list
+[After] Tool Context Keys: ['_invocation_context', '_event_actions', '_state', 'function_call_id']
+[After] Tool Context Invocation Context: ['artifact_service', 'session_service', 'memory_service', 'invocation_id', 'branch', 'agent', 'user_content', 'session', 'end_invocation', 'live_request_queue', 'active_streaming_tools', 'transcription_cache', 'run_config']
+[After] Tool Context State: {'openIdConnect_6947208751273422021_http_-4334986430444456630_existing_exchanged_credential': {'authType': 'http', 'http': {'scheme': 'bearer', 'credentials': {'token': 'DEFAULT_GOOGLE'}}}}
+[After] Args: {'q': "mimeType='application/vnd.ms-excel' or mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'", '_auth_prefix_vaf_Authorization': 'Bearer DEFAULT_GOOGLE'}
+
+[Before] Tool Name: get_current_user
+[Before] Tool Context Keys: ['_invocation_context', '_event_actions', '_state', 'function_call_id']
+[Before] Tool Context Keys: ['artifact_service', 'session_service', 'memory_service', 'invocation_id', 'branch', 'agent', 'user_content', 'session', 'end_invocation', 'live_request_queue', 'active_streaming_tools', 'transcription_cache', 'run_config']
+[Before] Tool Context Keys: ['openIdConnect_6947208751273422021_http_-4334986430444456630_existing_exchanged_credential']
+[Before] Args: {'_auth_prefix_vaf_Authorization': 'Bearer DEFAULT_GOOGLE'}
+
+[After] Tool Name: get_current_user
+[After] Tool Context Keys: ['_invocation_context', '_event_actions', '_state', 'function_call_id']
+[After] Tool Context Invocation Context: ['artifact_service', 'session_service', 'memory_service', 'invocation_id', 'branch', 'agent', 'user_content', 'session', 'end_invocation', 'live_request_queue', 'active_streaming_tools', 'transcription_cache', 'run_config']
+[After] Tool Context State: {'openIdConnect_6947208751273422021_http_-4334986430444456630_existing_exchanged_credential': {'authType': 'http', 'http': {'scheme': 'bearer', 'credentials': {'token': 'DEFAULT_GOOGLE'}}}, 'openIdConnect_1280140490240772121_http_6521365359042019346_existing_exchanged_credential': {'authType': 'http', 'http': {'scheme': 'bearer', 'credentials': {'token': 'DEFAULT_ATLASSIAN'}}}}
+[After] Args: {'_auth_prefix_vaf_Authorization': 'Bearer DEFAULT_ATLASSIAN'}
+
